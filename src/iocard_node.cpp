@@ -6,7 +6,10 @@
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "iocard");
-    IoCard abc;
+    uint8_t out = 0x01;
+    IoCard apiTest;
+    //apiTest.vWriteOutputs(0x00,0x01, out);
+    uint8_t u8Status = apiTest.u8ReadInputs();
     
     return 0;
 }

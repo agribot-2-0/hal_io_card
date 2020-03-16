@@ -41,7 +41,6 @@ include_directories(
 link_directories("${PROJECT_SOURCE_DIR}")
 add_executable(hal_iocard src/IoCard.cpp src/iocard_node.cpp)
 target_link_libraries(hal_iocard ${catkin_LIBRARIES} -lbiodaq)
-
 add_dependencies(hal_iocard ${catkin_EXPORTED_TARGETS})
 
 #############
