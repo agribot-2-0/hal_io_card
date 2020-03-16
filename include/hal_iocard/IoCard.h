@@ -1,9 +1,8 @@
 #pragma once
 
-class IoCard:
+class IoCard
 {
 private:
-
 public:
     IoCard();
 };
