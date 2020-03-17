@@ -9,12 +9,11 @@ int main(int argc, char **argv)
     uint8_t pinMask = 0x00;
     IoCard outTest(OUTPUT);
     outTest.vWritePort(PORT0, pinMask);
-    
     IoCard inTest(INPUT);
     uint8_t u8Status = inTest.u8ReadPort(PORT0);
-    std::cout << (int)u8Status << std::endl;
+    std::cout << static_cast<int>(u8Status) << std::endl;
 
-    //Note: Object can be also initialzie as input and output
-    // simultaneously IoCard IOTest(OUTPUT | INPUT);
+    // Note: Object can be also initialzied as input and output
+    // simultaneously: IoCard IOTest(OUTPUT | INPUT);
     return 0;
 }
