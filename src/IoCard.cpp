@@ -2,20 +2,19 @@
 
 #define  deviceDescription  L"PCIe-1730,BID#8"
 
-IoCard::IoCard(eCardMode Mode)
+IoCard::IoCard(eCardMode eMode)
 {
-    this->profilePath = L"../DemoDevice.xml";
-    this->ret = Success;
+    this->Ret = Success;
     this->eSelMode = NOT_SELECTED;
 
-    if ((Mode&INPUT) == INPUT)
+    if ((eMode&INPUT) == INPUT)
     {
-        this->instantDiCtrl = InstantDiCtrl_Create();
+        this->pInstantDiCtrl = InstantDiCtrl_Create();
         this->eSelMode = this->eSelMode | INPUT;
     }
-    if ((Mode&OUTPUT) == OUTPUT)
+    if ((eMode&OUTPUT) == OUTPUT)
     {
-        this->instantDoCtrl = InstantDoCtrl_Create();
+        this->pInstantDoCtrl = InstantDoCtrl_Create();
         this->eSelMode = this->eSelMode | OUTPUT;
     }
 }
@@ -24,11 +23,11 @@ IoCard::~IoCard()
 {
     if ((this->eSelMode&INPUT) == INPUT)
     {
-        InstantDiCtrl_Dispose(instantDiCtrl);
+        InstantDiCtrl_Dispose(pInstantDiCtrl);
     }
     if ((this->eSelMode&OUTPUT) == OUTPUT)
     {
-        InstantDoCtrl_Dispose(this->instantDoCtrl);
+        InstantDoCtrl_Dispose(this->pInstantDoCtrl);
     }
 }
 
@@ -36,7 +35,7 @@ void IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
 {
     if (this->eSelMode == OUTPUT)
     {
-        ret = Success;
+        Ret = Success;
         wchar_t enumString[256];
         byte dataBuffer[64] = {0};  // the first element is used for start port
         do
@@ -46,19 +45,19 @@ void IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
             devInfo.DeviceMode = ModeWrite;
             devInfo.ModuleIndex = 0;
             wcscpy(devInfo.Description, deviceDescription);
-            ret = InstantDoCtrl_setSelectedDevice(instantDoCtrl, &devInfo);
-            CHK_RESULT(ret);
-            ret = InstantDoCtrl_LoadProfile(instantDoCtrl, profilePath);
-            CHK_RESULT(ret);
+            Ret = InstantDoCtrl_setSelectedDevice(pInstantDoCtrl, &devInfo);
+            CHK_RESULT(Ret);
+            Ret = InstantDoCtrl_LoadProfile(pInstantDoCtrl, pProfilePath);
+            CHK_RESULT(Ret);
             dataBuffer[i32PortNum] = u8PinMask;
-            ret = InstantDoCtrl_WriteAny(instantDoCtrl, i32PortNum, 1, dataBuffer);
-            CHK_RESULT(ret);
+            Ret = InstantDoCtrl_WriteAny(pInstantDoCtrl, i32PortNum, 1, dataBuffer);
+            CHK_RESULT(Ret);
         }while (FALSE);
 
-        if (BioFailed(ret))
+        if (BioFailed(Ret))
         {
-            AdxEnumToString(L"ErrorCode", static_cast<int32>(ret), 256, enumString);
-            printf("Some error occurred. And the last error code is 0x%X. [%ls]\n", ret, enumString);
+            AdxEnumToString(L"ErrorCode", static_cast<int32>(Ret), 256, enumString);
+            printf("Some error occurred. And the last error code is 0x%X. [%ls]\n", Ret, enumString);
         }
     }
     else
@@ -80,12 +79,12 @@ uint8_t IoCard::u8ReadPort(int32 readPort)
             devInfo.DeviceMode = ModeWrite;
             devInfo.ModuleIndex = 0;
             wcscpy(devInfo.Description, deviceDescription);
-            ret = InstantDiCtrl_setSelectedDevice(instantDiCtrl, &devInfo);
-            CHK_RESULT(ret);
-            ret = InstantDiCtrl_LoadProfile(instantDiCtrl, profilePath);
-            CHK_RESULT(ret);
-            ret = InstantDiCtrl_ReadAny(instantDiCtrl, readPort, 1, dataBuffer);
-            CHK_RESULT(ret);
+            Ret = InstantDiCtrl_setSelectedDevice(pInstantDiCtrl, &devInfo);
+            CHK_RESULT(Ret);
+            Ret = InstantDiCtrl_LoadProfile(pInstantDiCtrl, pProfilePath);
+            CHK_RESULT(Ret);
+            Ret = InstantDiCtrl_ReadAny(pInstantDiCtrl, readPort, 1, dataBuffer);
+            CHK_RESULT(Ret);
         } while (FALSE);
         return dataBuffer[readPort];
     }
