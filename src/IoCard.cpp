@@ -50,14 +50,18 @@ void IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
             Ret = InstantDoCtrl_LoadProfile(pInstantDoCtrl, pProfilePath);
             CHK_RESULT(Ret);
             dataBuffer[i32PortNum] = u8PinMask;
-            Ret = InstantDoCtrl_WriteAny(pInstantDoCtrl, i32PortNum, 1, dataBuffer);
+            Ret = InstantDoCtrl_WriteAny(pInstantDoCtrl, i32PortNum,
+                                         1, dataBuffer);
             CHK_RESULT(Ret);
         }while (FALSE);
 
         if (BioFailed(Ret))
         {
-            AdxEnumToString(L"ErrorCode", static_cast<int32>(Ret), 256, enumString);
-            printf("Some error occurred. And the last error code is 0x%X. [%ls]\n", Ret, enumString);
+            AdxEnumToString(L"ErrorCode", static_cast<int32>(Ret),
+                                                             256,
+                                                             enumString);
+            printf("Some error occurred. The last error code is 0x%X. [%ls]\n",
+                    Ret, enumString);
         }
     }
     else
@@ -83,7 +87,8 @@ uint8_t IoCard::u8ReadPort(int32 readPort)
             CHK_RESULT(Ret);
             Ret = InstantDiCtrl_LoadProfile(pInstantDiCtrl, pProfilePath);
             CHK_RESULT(Ret);
-            Ret = InstantDiCtrl_ReadAny(pInstantDiCtrl, readPort, 1, dataBuffer);
+            Ret = InstantDiCtrl_ReadAny(pInstantDiCtrl, readPort,
+                                        1, dataBuffer);
             CHK_RESULT(Ret);
         } while (FALSE);
         return dataBuffer[readPort];
