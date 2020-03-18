@@ -4,6 +4,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(hal_iocard)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 #############################################################################
 ## Find catkin packages and libraries for catkin and system dependencies   ##
 #############################################################################
@@ -36,17 +38,14 @@ include_directories(
  include
  ${catkin_INCLUDE_DIRS}
 )
-
 link_directories("${PROJECT_SOURCE_DIR}")
 add_executable(hal_iocard src/IoCard.cpp src/iocard_node.cpp)
-target_link_libraries(hal_iocard ${catkin_LIBRARIES})
-
+target_link_libraries(hal_iocard ${catkin_LIBRARIES} -lbiodaq)
 add_dependencies(hal_iocard ${catkin_EXPORTED_TARGETS})
 
 #############
 ## Install ##
 #############
-
 
 #############
 ## Testing ##
