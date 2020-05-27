@@ -47,6 +47,12 @@ add_dependencies(hal_iocard ${catkin_EXPORTED_TARGETS})
 ## Install ##
 #############
 
+install(TARGETS
+  hal_iocard
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+
 #############
 ## Testing ##
 #############
