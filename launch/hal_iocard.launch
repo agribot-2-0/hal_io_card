@@ -1,0 +1,3 @@
+<launch>
+    <node name="iocard_node" pkg="hal_iocard" type="iocard_node"/>
+</launch>
