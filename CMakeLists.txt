@@ -11,6 +11,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 #############################################################################
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  std_msgs
 )
 
 ################################################
