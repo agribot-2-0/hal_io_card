@@ -19,11 +19,11 @@ inline eCardMode operator|(eCardMode a, eCardMode b)
 class IoCard
 {
 private:
-    InstantDoCtrl *pInstantDoCtrl;
-    InstantDiCtrl *pInstantDiCtrl;
-    ErrorCode Ret;
-    const wchar_t* pProfilePath = L"../DemoDevice.xml";
-    eCardMode eSelMode;
+    InstantDoCtrl *_pInstantDoCtrl;
+    InstantDiCtrl *_pInstantDiCtrl;
+    ErrorCode _Ret;
+    const wchar_t* _pProfilePath = L"../DemoDevice.xml";
+    eCardMode _eSelMode;
 public:
     IoCard(eCardMode Mode);
     ~IoCard();
