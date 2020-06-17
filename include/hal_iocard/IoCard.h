@@ -27,6 +27,6 @@ private:
 public:
     IoCard(eCardMode Mode);
     ~IoCard();
-    void vWritePort(int32 i32PortNum, uint8_t u8PinMask);
+    bool vWritePort(int32 i32PortNum, uint8_t u8PinMask);
     uint8_t u8ReadPort(int32 readPort);
 };

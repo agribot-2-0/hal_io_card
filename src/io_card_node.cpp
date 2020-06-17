@@ -9,13 +9,20 @@ IoCard g_IoControl(OUTPUT | INPUT);
 bool bScan(agribot_msgs::IoCard::Request &req,
            agribot_msgs::IoCard::Response &res)
 {
+    res.port0_state = 0x00;
+    res.port1_state = 0x00;
+
     if(req.set_do_port0 == true)
     {
-        g_IoControl.vWritePort(PORT0, (uint8_t)req.port0_mask);
+        if(!g_IoControl.vWritePort(PORT0, (uint8_t)req.port0_mask))
+            return false;
     }
     if(req.set_do_port1 == true)
     {
-        g_IoControl.vWritePort(PORT1, (uint8_t)req.port1_mask);
+        if(!g_IoControl.vWritePort(PORT1, (uint8_t)req.port1_mask))
+        {
+            return false;
+        }
     }
     if(req.read_port0 == true)
     {
@@ -27,19 +34,7 @@ bool bScan(agribot_msgs::IoCard::Request &req,
     }
     return true;
 }
-/*
-void setPortVal0(const std_msgs::UInt8::ConstPtr& msg)
-{
-    g_outTest.vWritePort(PORT0, (uint8_t)msg->data);
-    ROS_INFO("DO0: 0x%X", (uint8_t)msg->data);
-}
 
-void setPortVal1(const std_msgs::UInt8::ConstPtr& msg)
-{
-    g_outTest.vWritePort(PORT1, (uint8_t)msg->data);
-    ROS_INFO("DO1: 0x%X", (uint8_t)msg->data);
-}
-*/
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "iocard");

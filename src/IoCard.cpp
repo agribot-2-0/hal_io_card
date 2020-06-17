@@ -31,7 +31,7 @@ IoCard::~IoCard()
     }
 }
 
-void IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
+bool IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
 {
     if (this->_eSelMode == OUTPUT)
     {
@@ -62,12 +62,14 @@ void IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
                                                              enumString);
             printf("Some error occurred. The last error code is 0x%X. [%ls]\n",
                     _Ret, enumString);
+            return false;
         }
     }
     else
     {
-        // Wrong mode
+        return false;
     }
+    return true;
 }
 
 uint8_t IoCard::u8ReadPort(int32 readPort)
