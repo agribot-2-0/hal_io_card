@@ -12,23 +12,23 @@ bool bControlIO(agribot_msgs::IoCard::Request &req,
     res.port0_state = 0x00;
     res.port1_state = 0x00;
 
-    if(req.set_do_port0 == true)
+    if (req.set_do_port0 == true)
     {
-        if(!g_IoControl.vWritePort(PORT0, (uint8_t)req.port0_mask))
+        if (!g_IoControl.vWritePort(PORT0, (uint8_t)req.port0_mask))
             return false;
     }
-    if(req.set_do_port1 == true)
+    if (req.set_do_port1 == true)
     {
-        if(!g_IoControl.vWritePort(PORT1, (uint8_t)req.port1_mask))
+        if (!g_IoControl.vWritePort(PORT1, (uint8_t)req.port1_mask))
         {
             return false;
         }
     }
-    if(req.read_port0 == true)
+    if (req.read_port0 == true)
     {
         res.port0_state = g_IoControl.u8ReadPort(PORT0);
     }
-    if(req.read_port1 == true)
+    if (req.read_port1 == true)
     {
         res.port1_state = g_IoControl.u8ReadPort(PORT1);
     }
@@ -42,8 +42,7 @@ int main(int argc, char **argv)
     ros::Rate loop_rate(1);
 
     ros::ServiceServer service =
-      n.advertiseService("hal_io_card/control", bControlIO);
-    
+        n.advertiseService("hal_io_card/control", bControlIO);
     while (ros::ok())
     {
         ros::spinOnce();
