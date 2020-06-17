@@ -6,8 +6,8 @@
 
 IoCard g_IoControl(OUTPUT | INPUT);
 
-bool bScan(agribot_msgs::IoCard::Request &req,
-           agribot_msgs::IoCard::Response &res)
+bool bControlIO(agribot_msgs::IoCard::Request &req,
+                agribot_msgs::IoCard::Response &res)
 {
     res.port0_state = 0x00;
     res.port1_state = 0x00;
@@ -40,6 +40,9 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "iocard");
     ros::NodeHandle n;
     ros::Rate loop_rate(1);
+
+    ros::ServiceServer service =
+      n.advertiseService("hal_io_card/control", bControlIO);
     
     while (ros::ok())
     {

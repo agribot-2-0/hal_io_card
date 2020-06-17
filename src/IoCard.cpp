@@ -1,6 +1,6 @@
 #include <hal_iocard/IoCard.h>
 
-#define  deviceDescription  L"PCIe-1730,BID#8"
+#define  deviceDescription  L"PCIe-1730,BID#0"
 
 IoCard::IoCard(eCardMode eMode)
 {
@@ -33,7 +33,7 @@ IoCard::~IoCard()
 
 bool IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
 {
-    if (this->_eSelMode == OUTPUT)
+  if ((this->_eSelMode&OUTPUT) == OUTPUT)
     {
         _Ret = Success;
         wchar_t enumString[256];
@@ -67,7 +67,7 @@ bool IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
     }
     else
     {
-        return false;
+      return false;
     }
     return true;
 }
