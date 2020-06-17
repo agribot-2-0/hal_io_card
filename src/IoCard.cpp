@@ -4,28 +4,28 @@
 
 IoCard::IoCard(eCardMode eMode)
 {
-    this->_Ret = Success;
-    this->_eSelMode = NOT_SELECTED;
+    _Ret = Success;
+    _eSelMode = NOT_SELECTED;
 
     if ((eMode&INPUT) == INPUT)
     {
-        this->_pInstantDiCtrl = InstantDiCtrl_Create();
-        this->_eSelMode = this->_eSelMode | INPUT;
+        _pInstantDiCtrl = InstantDiCtrl_Create();
+        _eSelMode = _eSelMode | INPUT;
     }
     if ((eMode&OUTPUT) == OUTPUT)
     {
-        this->_pInstantDoCtrl = InstantDoCtrl_Create();
-        this->_eSelMode = this->_eSelMode | OUTPUT;
+        _pInstantDoCtrl = InstantDoCtrl_Create();
+        _eSelMode = _eSelMode | OUTPUT;
     }
 }
 
 IoCard::~IoCard()
 {
-    if ((this->_eSelMode&INPUT) == INPUT)
+    if ((_eSelMode&INPUT) == INPUT)
     {
         InstantDiCtrl_Dispose(_pInstantDiCtrl);
     }
-    if ((this->_eSelMode&OUTPUT) == OUTPUT)
+    if ((_eSelMode&OUTPUT) == OUTPUT)
     {
         InstantDoCtrl_Dispose(_pInstantDoCtrl);
     }
@@ -33,7 +33,7 @@ IoCard::~IoCard()
 
 bool IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
 {
-  if ((this->_eSelMode&OUTPUT) == OUTPUT)
+  if ((_eSelMode&OUTPUT) == OUTPUT)
     {
         _Ret = Success;
         wchar_t enumString[256];
@@ -74,7 +74,7 @@ bool IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
 
 uint8_t IoCard::u8ReadPort(int32 readPort)
 {
-    if (this->_eSelMode == INPUT)
+    if ((_eSelMode&INPUT) == INPUT)
     {
         int i;
         byte dataBuffer[64] = {0};
