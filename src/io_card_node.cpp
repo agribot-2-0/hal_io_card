@@ -9,28 +9,20 @@ IoCard g_IoControl(OUTPUT | INPUT);
 bool bControlIO(agribot_msgs::IoCard::Request &req,
                 agribot_msgs::IoCard::Response &res)
 {
-    res.port0_state = 0x00;
-    res.port1_state = 0x00;
+    res.port_state = 0x00;
+    ROS_INFO("Writing port 0x0%x with mask 0x0%x",
+             (uint8_t)req.sel_out_port, (uint8_t)req.out_port_mask);
 
-    if (req.set_do_port0 == true)
+    if ((uint8_t)req.out_port_mask != req.NONE)
     {
-        if (!g_IoControl.vWritePort(PORT0, (uint8_t)req.port0_mask))
+        if (!g_IoControl.vWritePort((uint8_t)req.sel_out_port,
+                                    (uint8_t)req.out_port_mask))
             return false;
     }
-    if (req.set_do_port1 == true)
+
+    if ((uint8_t)req.sel_read_port != req.NONE)
     {
-        if (!g_IoControl.vWritePort(PORT1, (uint8_t)req.port1_mask))
-        {
-            return false;
-        }
-    }
-    if (req.read_port0 == true)
-    {
-        res.port0_state = g_IoControl.u8ReadPort(PORT0);
-    }
-    if (req.read_port1 == true)
-    {
-        res.port1_state = g_IoControl.u8ReadPort(PORT1);
+        res.port_state = g_IoControl.u8ReadPort((uint8_t)req.sel_read_port);
     }
     return true;
 }

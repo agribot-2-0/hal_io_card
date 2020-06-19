@@ -1,6 +1,6 @@
 #include <hal_iocard/IoCard.h>
 
-#define  deviceDescription  L"PCIe-1730,BID#0"
+#define  deviceDescription  L"PCIe-1730,BID#8"
 
 IoCard::IoCard(eCardMode eMode)
 {

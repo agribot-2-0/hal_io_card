@@ -6,9 +6,6 @@
 #include <hal_iocard/compatibility.h>
 #include <hal_iocard/bdaqctrl.h>
 
-#define PORT0 0x00
-#define PORT1 0x01
-
 typedef unsigned char byte;
 enum eCardMode {NOT_SELECTED, INPUT, OUTPUT};
 inline eCardMode operator|(eCardMode a, eCardMode b)
