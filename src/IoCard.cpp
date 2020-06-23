@@ -6,6 +6,7 @@ IoCard::IoCard(eCardMode eMode)
 {
     _Ret = Success;
     _eSelMode = NOT_SELECTED;
+    _u16OutMask = 0x00;
 
     if ((eMode&INPUT) == INPUT)
     {
@@ -98,5 +99,30 @@ uint8_t IoCard::u8ReadPort(int32 readPort)
     else
     {
         // Wrong mode selected
+    }
+}
+
+void IoCard::vSetPinMask(uint8_t u8PinNum, bool bState)
+{
+    uint16_t u16PinVal = 0x0001;
+    if (bState)
+    {
+        _u16OutMask |= (u16PinVal<<u8PinNum);
+    }
+    else
+    {
+        _u16OutMask &= ~(u16PinVal<<u8PinNum);
+    }
+}
+
+uint8_t IoCard::u8GetPinMask(uint8_t u8Port)
+{
+    if (u8Port == PORT_0)
+    {
+        return (_u16OutMask&(0x00ff));
+    }
+    if (u8Port == PORT_1)
+    {
+        return (_u16OutMask>>8)&(0x00ff);
     }
 }

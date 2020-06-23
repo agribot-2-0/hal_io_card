@@ -2,28 +2,69 @@
 
 #include <ros/ros.h>
 #include <ros/console.h>
-#include <agribot_msgs/IoCard.h>
+#include <agribot_msgs/IoCardIn.h>
+#include <agribot_msgs/IoCardOut.h>
 
 IoCard g_IoControl(OUTPUT | INPUT);
 
-bool bControlIO(agribot_msgs::IoCard::Request &req,
-                agribot_msgs::IoCard::Response &res)
+bool bControlOut(agribot_msgs::IoCardOut::Request &req,
+                agribot_msgs::IoCardOut::Response &res)
 {
-    res.port_state = 0x00;
-    ROS_INFO("Writing port 0x0%x with mask 0x0%x",
-             (uint8_t)req.sel_out_port, (uint8_t)req.out_port_mask);
+    ROS_INFO("Writing pin DO%d with state %d",
+             (uint16_t)req.pin, (uint8_t)req.state);
 
-    if ((uint8_t)req.out_port_mask != req.NONE)
+    g_IoControl.vSetPinMask(req.pin, req.state);
+
+    if (req.pin <= 7)
     {
-        if (!g_IoControl.vWritePort((uint8_t)req.sel_out_port,
-                                    (uint8_t)req.out_port_mask))
-            return false;
+        if (!g_IoControl.vWritePort(PORT_0,
+                                    g_IoControl.u8GetPinMask(PORT_0)))
+            {
+                res.success = false;
+                return false;
+            }
     }
 
-    if ((uint8_t)req.sel_read_port != req.NONE)
+    if ((req.pin >= 8) && (req.pin <= 15))
     {
-        res.port_state = g_IoControl.u8ReadPort((uint8_t)req.sel_read_port);
+        if (!g_IoControl.vWritePort(PORT_1,
+                                    g_IoControl.u8GetPinMask(PORT_1)))
+            {
+                res.success = false;
+                return false;
+            }
     }
+    res.success = true;
+    return true;
+}
+
+bool bControlIn(agribot_msgs::IoCardIn::Request &req,
+                agribot_msgs::IoCardIn::Response &res)
+{
+    uint8_t u8ReadPin = 0x01;
+    uint32_t u32PortState = 0x00;
+    if (req.pin <= 7)
+    {
+        u32PortState = g_IoControl.u8ReadPort(PORT_0);
+        u8ReadPin = u8ReadPin<<req.pin;
+    }
+    if ((req.pin >= 8) && (req.pin <= 15))
+    {
+        u32PortState = g_IoControl.u8ReadPort(PORT_1);
+        u8ReadPin = u8ReadPin<<(req.pin-PORT1_START_PIN);
+    }
+
+    if (u8ReadPin&(u32PortState&0xff) == u8ReadPin)
+    {
+        res.state = req.ON;
+    }
+    else
+    {
+        res.state = req.OFF;
+    }
+
+    ROS_INFO("Reading pin DI%d. The state is %d",
+             (uint16_t)req.pin, (uint8_t)res.state);
     return true;
 }
 
@@ -33,10 +74,15 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
     ros::Rate loop_rate(1);
 
-    ros::ServiceServer service =
-        n.advertiseService("hal_io_card/control", bControlIO);
+    ros::ServiceServer service_in =
+        n.advertiseService("hal_io_card/In", bControlIn);
+    ros::ServiceServer service_out =
+        n.advertiseService("hal_io_card/Out", bControlOut);
+
     while (ros::ok())
     {
+        ROS_INFO("hey! %x", g_IoControl.u8GetPinMask(PORT_0));
+        ROS_INFO("hey! %x", g_IoControl.u8GetPinMask(PORT_1));
         ros::spinOnce();
         loop_rate.sleep();
     }
