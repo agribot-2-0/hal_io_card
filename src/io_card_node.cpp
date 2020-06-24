@@ -43,6 +43,7 @@ bool bControlIn(agribot_msgs::IoCardIn::Request &req,
 {
     uint8_t u8ReadPin = 0x01;
     uint32_t u32PortState = 0x00;
+    res.success = false;
     if (req.pin <= 7)
     {
         u32PortState = g_IoControl.u8ReadPort(PORT_0);
@@ -57,10 +58,12 @@ bool bControlIn(agribot_msgs::IoCardIn::Request &req,
     if (u8ReadPin&(u32PortState&0xff) == u8ReadPin)
     {
         res.state = req.ON;
+        res.success = true;
     }
     else
     {
         res.state = req.OFF;
+        res.success = true;
     }
 
     ROS_INFO("Reading pin DI%d. The state is %d",
@@ -81,8 +84,9 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        ROS_INFO("hey! %x", g_IoControl.u8GetPinMask(PORT_0));
-        ROS_INFO("hey! %x", g_IoControl.u8GetPinMask(PORT_1));
+        ROS_INFO("Port0: 0x%x", g_IoControl.u8ReadPort(PORT_0));
+        ROS_INFO("Port1: 0x%x", g_IoControl.u8ReadPort(PORT_1));
+
         ros::spinOnce();
         loop_rate.sleep();
     }
