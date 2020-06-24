@@ -94,7 +94,7 @@ uint8_t IoCard::u8ReadPort(int32 readPort)
                                          1, dataBuffer);
             CHK_RESULT(_Ret);
         } while (FALSE);
-        return dataBuffer[readPort];
+        return dataBuffer[0];
     }
     else
     {

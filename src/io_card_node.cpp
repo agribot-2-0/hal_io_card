@@ -55,7 +55,7 @@ bool bControlIn(agribot_msgs::IoCardIn::Request &req,
         u8ReadPin = u8ReadPin<<(req.pin-PORT1_START_PIN);
     }
 
-    if (u8ReadPin&(u32PortState&0xff) == u8ReadPin)
+    if ((u32PortState&u8ReadPin) == u8ReadPin)
     {
         res.state = req.ON;
         res.success = true;
