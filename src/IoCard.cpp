@@ -1,6 +1,6 @@
 #include <hal_iocard/IoCard.h>
 
-#define  deviceDescription  L"PCIe-1730,BID#8"
+#define  deviceDescription  L"PCIe-1730,BID#0"
 
 IoCard::IoCard(eCardMode eMode)
 {
@@ -50,7 +50,7 @@ bool IoCard::vWritePort(int32 i32PortNum, uint8_t u8PinMask)
             CHK_RESULT(_Ret);
             _Ret = InstantDoCtrl_LoadProfile(_pInstantDoCtrl, _pProfilePath);
             CHK_RESULT(_Ret);
-            dataBuffer[i32PortNum] = u8PinMask;
+            dataBuffer[0] = u8PinMask;
             _Ret = InstantDoCtrl_WriteAny(_pInstantDoCtrl, i32PortNum,
                                          1, dataBuffer);
             CHK_RESULT(_Ret);

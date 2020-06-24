@@ -8,7 +8,7 @@
 IoCard g_IoControl(OUTPUT | INPUT);
 
 bool bControlOut(agribot_msgs::IoCardOut::Request &req,
-                agribot_msgs::IoCardOut::Response &res)
+                 agribot_msgs::IoCardOut::Response &res)
 {
     ROS_INFO("Writing pin DO%d with state %d",
              (uint16_t)req.pin, (uint8_t)req.state);
