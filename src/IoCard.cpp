@@ -107,11 +107,11 @@ void IoCard::vSetPinMask(uint8_t u8PinNum, bool bState)
     uint16_t u16PinVal = 0x0001;
     if (bState)
     {
-        _u16OutMask |= (u16PinVal<<u8PinNum);
+        _u16OutMask |= (u16PinVal << u8PinNum);
     }
     else
     {
-        _u16OutMask &= ~(u16PinVal<<u8PinNum);
+        _u16OutMask &= ~(u16PinVal << u8PinNum);
     }
 }
 

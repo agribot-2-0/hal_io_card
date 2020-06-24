@@ -47,12 +47,12 @@ bool bControlIn(agribot_msgs::IoCardIn::Request &req,
     if (req.pin <= 7)
     {
         u32PortState = g_IoControl.u8ReadPort(PORT_0);
-        u8ReadPin = u8ReadPin<<req.pin;
+        u8ReadPin = u8ReadPin << req.pin;
     }
     if ((req.pin >= 8) && (req.pin <= 15))
     {
         u32PortState = g_IoControl.u8ReadPort(PORT_1);
-        u8ReadPin = u8ReadPin<<(req.pin-PORT1_START_PIN);
+        u8ReadPin = u8ReadPin << (req.pin-PORT1_START_PIN);
     }
 
     if ((u32PortState&u8ReadPin) == u8ReadPin)
