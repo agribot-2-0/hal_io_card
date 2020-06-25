@@ -10,18 +10,15 @@ IoCard g_IoControl(OUTPUT | INPUT);
 bool bControlOut(agribot_msgs::IoCardOut::Request &req,
                  agribot_msgs::IoCardOut::Response &res)
 {
-    ROS_INFO("Writing pin DO%d with state %d",
-             (uint16_t)req.pin, (uint8_t)req.state);
-
     g_IoControl.vSetPinMask(req.pin, req.state);
-
+    res.success = true;
     if (req.pin <= 7)
     {
         if (!g_IoControl.vWritePort(PORT_0,
                                     g_IoControl.u8GetPinMask(PORT_0)))
             {
                 res.success = false;
-                return false;
+                return true;
             }
     }
 
@@ -31,10 +28,12 @@ bool bControlOut(agribot_msgs::IoCardOut::Request &req,
                                     g_IoControl.u8GetPinMask(PORT_1)))
             {
                 res.success = false;
-                return false;
+                return true;
             }
     }
-    res.success = true;
+    ROS_INFO("Writing pin DO%d with state %d",
+             (uint16_t)req.pin, (uint8_t)req.state);
+
     return true;
 }
 
@@ -75,18 +74,15 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "iocard");
     ros::NodeHandle n;
-    ros::Rate loop_rate(1);
+    ros::Rate loop_rate(0.1);
 
     ros::ServiceServer service_in =
-        n.advertiseService("hal_io_card/In", bControlIn);
+        n.advertiseService("hal_io_card/in", bControlIn);
     ros::ServiceServer service_out =
-        n.advertiseService("hal_io_card/Out", bControlOut);
+        n.advertiseService("hal_io_card/out", bControlOut);
 
     while (ros::ok())
     {
-        ROS_INFO("Port0: 0x%x", g_IoControl.u8ReadPort(PORT_0));
-        ROS_INFO("Port1: 0x%x", g_IoControl.u8ReadPort(PORT_1));
-
         ros::spinOnce();
         loop_rate.sleep();
     }
