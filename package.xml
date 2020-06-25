@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>hal_iocard</name>
+  <name>hal_io_card</name>
   <version>0.0.0</version>
-  <description>The hal_iocard package</description>
+  <description>The hal_io_card package</description>
 
   <maintainer email="m.wiadomski@agribot.eu">Michal Wiadomski</maintainer>
 
@@ -12,6 +12,8 @@
   <build_depend>roscpp</build_depend>
   <build_export_depend>roscpp</build_export_depend>
   <exec_depend>roscpp</exec_depend>
+
+  <build_depend>agribot_msgs</build_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
