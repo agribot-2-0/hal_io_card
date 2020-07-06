@@ -9,7 +9,7 @@
 //#if defined(DEBUG)||defined(_DEBUG)
 #define CHK_RESULT(ret) {if(BioFailed(ret))break;}
 //#else
-//#define CHK_RESULT(ret) 
+//#define CHK_RESULT(ret)
 //#endif
 
 #define MinValue(a,b) (((a) < (b)) ? (a) : (b))
@@ -32,6 +32,3 @@ static int kbhit(void)
 #define SLEEP(second)  Sleep(second*1000)
 #define BYTE           uint8
 #endif
-
-
-
