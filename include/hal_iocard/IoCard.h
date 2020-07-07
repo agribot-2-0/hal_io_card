@@ -1,10 +1,14 @@
+/*
+* Copyright (C) 2020 Agribot. All rights reserved.
+*/
+
 #pragma once
-#include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <wchar.h>
-#include <hal_iocard/compatibility.h>
-#include <hal_iocard/bdaqctrl.h>
+#include <hal_iocard/bdaq/compatibility.h>
+#include <hal_iocard/bdaq/bdaqctrl.h>
+#include <iostream>
 
 #define PORT_0 0
 #define PORT_1 1
@@ -19,15 +23,15 @@ inline eCardMode operator|(eCardMode a, eCardMode b)
 
 class IoCard
 {
-private:
+ private:
     InstantDoCtrl *_pInstantDoCtrl;
     InstantDiCtrl *_pInstantDiCtrl;
     ErrorCode _Ret;
     const wchar_t* _pProfilePath = L"../DemoDevice.xml";
     eCardMode _eSelMode;
     uint16_t _u16OutMask;
-public:
-    IoCard(eCardMode Mode);
+ public:
+    explicit IoCard(eCardMode Mode);
     ~IoCard();
     bool vWritePort(int32 i32PortNum, uint8_t u8PinMask);
     uint8_t u8ReadPort(int32 readPort);
