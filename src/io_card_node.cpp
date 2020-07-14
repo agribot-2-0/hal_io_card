@@ -1,3 +1,7 @@
+/*
+* Copyright (C) 2020 Agribot. All rights reserved.
+*/
+
 #include <hal_iocard/IoCard.h>
 
 #include <ros/ros.h>
@@ -7,8 +11,8 @@
 
 IoCard g_IoControl(OUTPUT | INPUT);
 
-bool bControlOut(agribot_msgs::IoCardOut::Request &req,
-                 agribot_msgs::IoCardOut::Response &res)
+bool bControlOut(agribot_msgs::IoCardOut::Request &req,  // NOLINT(runtime/references)
+                 agribot_msgs::IoCardOut::Response &res)  // NOLINT(runtime/references)
 {
     g_IoControl.vSetPinMask(req.pin, req.state);
     res.success = true;
@@ -37,8 +41,8 @@ bool bControlOut(agribot_msgs::IoCardOut::Request &req,
     return true;
 }
 
-bool bControlIn(agribot_msgs::IoCardIn::Request &req,
-                agribot_msgs::IoCardIn::Response &res)
+bool bControlIn(agribot_msgs::IoCardIn::Request &req,  // NOLINT(runtime/references)
+                agribot_msgs::IoCardIn::Response &res)  // NOLINT(runtime/references)
 {
     uint8_t u8ReadPin = 0x01;
     uint32_t u32PortState = 0x00;
