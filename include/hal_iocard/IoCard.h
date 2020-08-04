@@ -28,7 +28,7 @@ inline eCardMode operator|(eCardMode a, eCardMode b)
 
 class IoCard
 {
-private:
+ private:
   InstantDoCtrl* _pInstantDoCtrl;
   InstantDiCtrl* _pInstantDiCtrl;
   ErrorCode _Ret;
@@ -36,7 +36,7 @@ private:
   eCardMode _eSelMode;
   uint16_t _u16OutMask;
 
-public:
+ public:
   explicit IoCard(eCardMode Mode);
   ~IoCard();
   bool vWritePort(int32 i32PortNum, uint8_t u8PinMask);
