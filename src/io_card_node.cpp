@@ -75,10 +75,14 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "iocard");
   ros::NodeHandle n;
   ros::Rate loop_rate(0.1);
+  constexpr uint8_t router_feedback_pin = 0;
 
   ros::ServiceServer service_in = n.advertiseService("io_card/in", bControlIn);
   ros::ServiceServer service_out = n.advertiseService("io_card/out", bControlOut);
 
+  // Give feedback to router, that advantech is powered on:
+  g_IoControl.vSetPinMask(router_feedback_pin, 0x01);
+  g_IoControl.vWritePort(PORT_0,  g_IoControl.u8GetPinMask(PORT_0));
   while (ros::ok())
   {
     ros::spinOnce();
