@@ -79,6 +79,10 @@ int main(int argc, char** argv)
   ros::ServiceServer service_in = n.advertiseService("io_card/in", bControlIn);
   ros::ServiceServer service_out = n.advertiseService("io_card/out", bControlOut);
 
+  g_IoControl.vSetPinMask(0, 1); // set 'router feedback' pin to state 1
+  g_IoControl.vSetPinMask(2, 1); // set 'pwr relay' pin to state 1
+  g_IoControl.vWritePort(PORT_0, g_IoControl.u8GetPinMask(PORT_0));
+
   while (ros::ok())
   {
     ros::spinOnce();
