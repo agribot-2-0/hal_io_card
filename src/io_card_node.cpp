@@ -2,12 +2,11 @@
  * Copyright (C) 2020 Agribot. All rights reserved.
  */
 
-#include <hal_iocard/IoCard.h>
-
-#include <ros/ros.h>
-#include <ros/console.h>
 #include <agribot_msgs/IoCardIn.h>
 #include <agribot_msgs/IoCardOut.h>
+#include <hal_iocard/IoCard.h>
+#include <ros/console.h>
+#include <ros/ros.h>
 
 IoCard g_IoControl(OUTPUT | INPUT);
 
@@ -75,12 +74,14 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "iocard");
   ros::NodeHandle n;
   ros::Rate loop_rate(0.1);
+  constexpr uint8_t router_feedback_pin = 0;
+  constexpr uint8_t pwr_relay_pin = 2;
 
   ros::ServiceServer service_in = n.advertiseService("io_card/in", bControlIn);
   ros::ServiceServer service_out = n.advertiseService("io_card/out", bControlOut);
 
-  g_IoControl.vSetPinMask(0, 1); // set 'router feedback' pin to state 1
-  g_IoControl.vSetPinMask(2, 1); // set 'pwr relay' pin to state 1
+  g_IoControl.vSetPinMask(router_feedback_pin, 1);  // set 'router feedback' pin to state 1
+  g_IoControl.vSetPinMask(pwr_relay_pin, 1);        // set 'pwr relay' pin to state 1
   g_IoControl.vWritePort(PORT_0, g_IoControl.u8GetPinMask(PORT_0));
 
   while (ros::ok())

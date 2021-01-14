@@ -59,7 +59,6 @@ install(DIRECTORY launch
   PATTERN ".svn" EXCLUDE
 )
 
-
 #############
 ## Testing ##
 #############
