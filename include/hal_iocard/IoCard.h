@@ -1,13 +1,14 @@
 /*
- * Copyright (C) 2020 Agribot. All rights reserved.
+ * Copyright (C) 2020-2021 Agribot. All rights reserved.
  */
 
 #pragma once
-#include <stdlib.h>
-#include <stdio.h>
-#include <wchar.h>
-#include <hal_iocard/bdaq/compatibility.h>
 #include <hal_iocard/bdaq/bdaqctrl.h>
+#include <hal_iocard/bdaq/compatibility.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <wchar.h>
+
 #include <iostream>
 
 #define PORT_0 0

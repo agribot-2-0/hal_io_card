@@ -40,7 +40,7 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 link_directories("${PROJECT_SOURCE_DIR}")
-add_executable(hal_io_card src/IoCard.cpp src/io_card_node.cpp)
+add_executable(hal_io_card src/IoCard.cpp src/IoCardNode.cpp src/io_card_node.cpp)
 target_link_libraries(hal_io_card ${catkin_LIBRARIES} -lbiodaq)
 add_dependencies(hal_io_card ${catkin_EXPORTED_TARGETS})
 
