@@ -17,10 +17,10 @@
 
 class IoCardNode
 {
-  static constexpr uint8_t router_feedback_pin = 0;
-  static constexpr uint8_t pwr_relay_pin = 2;
+  static constexpr uint8_t ROUTER_FEEDBACK_PIN = 0;
+  static constexpr uint8_t PWR_RELAY_PIN = 2;
 
-  std::unique_ptr<IoCard> io_card_node_handler_;
+  std::unique_ptr<IoCard> io_card_handler_;
   std::unique_ptr<ros::NodeHandle> nh_;
   ros::ServiceServer io_out_service_;
   ros::ServiceServer io_in_service_;
