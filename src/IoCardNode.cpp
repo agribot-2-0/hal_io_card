@@ -51,8 +51,8 @@ bool IoCardNode::ioControlOut(agribot_msgs::IoCardOut::Request& req,   // NOLINT
       return true;
     }
   }
-  ROS_INFO("[HalIoCard] Writing pin DO%d with state %d", (uint16_t)req.pin, (uint8_t)req.state);
 
+  ROS_INFO_STREAM("[HalIoCard] Writing pin DO" << req.pin << " with state " << req.state);
   return true;
 }
 
@@ -65,12 +65,12 @@ bool IoCardNode::ioControlIn(agribot_msgs::IoCardIn::Request& req,   // NOLINT(r
   if (req.pin <= 7)
   {
     port_state = io_card_handler_->u8ReadPort(PORT_0);
-    read_pin = read_pin << req.pin;
+    read_pin = 0x01 << req.pin;
   }
   if ((req.pin >= 8) && (req.pin <= 15))
   {
     port_state = io_card_handler_->u8ReadPort(PORT_1);
-    read_pin = read_pin << (req.pin - PORT1_START_PIN);
+    read_pin = 0x01 << (req.pin - PORT1_START_PIN);
   }
 
   if ((port_state & read_pin) == read_pin)
@@ -84,6 +84,6 @@ bool IoCardNode::ioControlIn(agribot_msgs::IoCardIn::Request& req,   // NOLINT(r
     res.success = true;
   }
 
-  ROS_INFO("[HalIoCard] Reading pin DI%d. The state is %d", (uint16_t)req.pin, (uint8_t)res.state);
+  ROS_INFO_STREAM("[HalIoCard] Reading pin DI" << req.pin << ". The state is " << (uint8_t)res.state);
   return true;
 }
