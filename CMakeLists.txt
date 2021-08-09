@@ -44,12 +44,18 @@ add_executable(hal_io_card src/IoCard.cpp src/IoCardNode.cpp src/io_card_node.cp
 target_link_libraries(hal_io_card ${catkin_LIBRARIES} -lbiodaq)
 add_dependencies(hal_io_card ${catkin_EXPORTED_TARGETS})
 
+
+add_executable(hal_io_card_start src/IoCard.cpp src/io_card_start.cpp)
+target_link_libraries(hal_io_card_start ${catkin_LIBRARIES} -lbiodaq)
+add_dependencies(hal_io_card_start ${catkin_EXPORTED_TARGETS})
+
 #############
 ## Install ##
 #############
 
 install(TARGETS
   hal_io_card
+  hal_io_card_start
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
